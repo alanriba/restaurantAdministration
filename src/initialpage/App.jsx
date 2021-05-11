@@ -22,56 +22,28 @@ import uicomponents from '../MainPage/UIinterface/components';
 import Error404 from '../MainPage/Pages/ErrorPage/error404';
 import Error500 from '../MainPage/Pages/ErrorPage/error500';
 
+import firebase, { FirebaseContext } from './../core/firebase';
 
-// import 'Assets/css/font-awesome.min.css';
 
 import $ from 'jquery';
-// window.jQuery = $;
-// window.$ = $;
-// import UserPage from './pages/UserPage'
-/**
- * Initial Path To Check Whether User Is Logged In Or Not
- */
-// const InitialPath = ({ component: Component, ...rest, authUser }) =>
-//    <Route
-//       {...rest}
-//       render={props =>
-//          authUser
-//             ? <Component {...props} />
-//             : <Redirect
-//                to={{
-//                   pathname: '/login',
-//                   state: { from: props.location }
-//                }}
-//             />}
-//    />;
 
 export default class App extends Component {
-    componentDidMount(){
+    componentDidMount() {
         if (location.pathname.includes("login") || location.pathname.includes("register") || location.pathname.includes("forgotpassword")
-        || location.pathname.includes("otp")|| location.pathname.includes("lockscreen") ) {
+            || location.pathname.includes("otp") || location.pathname.includes("lockscreen")) {
             $('body').addClass('account-page');
-        }else if (location.pathname.includes("error-404") || location.pathname.includes("error-500") ) {
+        } else if (location.pathname.includes("error-404") || location.pathname.includes("error-500")) {
             $('body').addClass('error-page');
         }
     }
-       render(){
-            const { location, match, user } = this.props;
-            
-            
-            // if (location.pathname === '/') {
-            // if (user === null) {
-            //     return (<Redirect to={'/login'} />);
-            // } else {
-            //     return (<Redirect to={'/light/app/main/dashboard'} />);
-            // }
-            // }
-            if (location.pathname === '/') {
-                 
-                   return (<Redirect to={'/app/main/dashboard'} />);
-                
-             }
-            return (
+    render() {
+        const { location, match, user } = this.props;
+        if (location.pathname === '/') {
+            return (<Redirect to={'/app/main/dashboard'} />);
+        }
+        return (
+
+            <FirebaseContext.Provider value={{ firebase }}>
                 <Switch>
                     {/* <InitialPath
                         path={`${match.url}app`}
@@ -91,12 +63,14 @@ export default class App extends Component {
                     <Route path="/tasks" component={Tasklayout} />
                     <Route path="/email" component={Emaillayout} />
                     <Route path="/conversation" component={chatlayout} />
-                    
+
                     <Route path="/ui-components" component={uicomponents} />
                     <Route path="/error-404" component={Error404} />
                     <Route path="/error-500" component={Error500} />
                 </Switch>
-            )
-        }
-         
+
+            </FirebaseContext.Provider>
+        )
+    }
+
 }
